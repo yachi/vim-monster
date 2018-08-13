@@ -38,7 +38,7 @@ function! monster#completion#rcodetools#async_rct_complete#complete(context)
 
 	let tempfile = monster#make_tempfile(a:context.bufnr, "rb")
 	let command = monster#completion#rcodetools#rct_complete#command(a:context, tempfile)
-	let process = job_start(command, {
+	let process = jobstart(command, {
     \ 'close_cb': {ch -> [s:then(a:context, ch), delete(tempfile)]}
 	\})
 
@@ -62,7 +62,7 @@ function! monster#completion#rcodetools#async_rct_complete#cancel()
 		return
 	endif
 	echo "monster.vim - cancel async completion"
-	call job_stop(s:process, 'kill')
+	call jobstop(s:process, 'kill')
 	unlet s:process
 endfunction
 

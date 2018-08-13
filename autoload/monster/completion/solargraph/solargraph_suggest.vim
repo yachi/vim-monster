@@ -28,10 +28,10 @@ function! monster#completion#solargraph#solargraph_suggest#complete(context)
 	if !exists('s:job') || job_status(s:job) != "run"
 		let command = g:monster#completion#solargraph#complete_command
 		let args = [command, "server", "--port=".g:monster#completion#solargraph#http_port]
-		let s:job = job_start(args)
+		let s:job = jobstart(args)
 		augroup MonsterSolargraph
 			au!
-			au VimLeave * call job_stop(s:job)
+			au VimLeave * call jobstop(s:job)
 		augroup END
 	endif
 	try

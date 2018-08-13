@@ -38,16 +38,16 @@ function! monster#completion#solargraph#async_solargraph_suggest#complete(contex
 	if !exists('s:job') || job_status(s:job) != "run"
 		let command = g:monster#completion#solargraph#complete_command
 		let args = [command, "server", "--port=".g:monster#completion#solargraph#http_port]
-		let s:job = job_start(args)
+		let s:job = jobstart(args)
 		augroup MonsterSolargraph
 			au!
-			au VimLeave * call job_stop(s:job)
+			au VimLeave * call jobstop(s:job)
 		augroup END
 	endif
 
 	let tempfile = monster#make_tempfile(a:context.bufnr, "rb")
 	let command = monster#completion#solargraph#solargraph_suggest#command(a:context, tempfile)
-	let process = job_start(command, {
+	let process = jobstart(command, {
     \ 'close_cb': {ch -> [s:then(a:context, ch), delete(tempfile)]}
 	\})
 
@@ -71,7 +71,7 @@ function! monster#completion#solargraph#async_solargraph_suggest#cancel()
 		return
 	endif
 	echo "monster.vim - cancel async completion"
-	call job_stop(s:process, 'kill')
+	call jobstop(s:process, 'kill')
 	unlet s:process
 endfunction
 
